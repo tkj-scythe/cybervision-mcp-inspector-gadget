@@ -102,6 +102,24 @@ get_endpoint_info(operation_id="getComponentList")
 - Mutating API calls (POST/PUT/PATCH/DELETE) change Center data; Admin role is required for writes.
 - `CYBERVISION_VERIFY_SSL=false` disables TLS certificate verification (acceptable for lab/self-signed centers only).
 
+## Publish to GitHub
+
+Secrets must stay in `.env` only (gitignored). Before pushing:
+
+```bash
+chmod +x scripts/check-no-secrets.sh
+./scripts/check-no-secrets.sh
+```
+
+Create the remote repository and push:
+
+```bash
+gh auth login
+gh repo create cybervision-mcp-inspector-gadget --public --source=. --remote=origin --push
+```
+
+Use `--private` instead of `--public` if you prefer a private repository.
+
 ## Manual test
 
 ```bash
