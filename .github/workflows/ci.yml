@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Scan tracked files for secrets
+        run: ./scripts/check-no-secrets.sh
+
+      - name: Smoke test OpenAPI index
+        run: |
+          python -c "
+          from cybervision_mcp.openapi_index import get_endpoints, list_tags
+          endpoints = get_endpoints()
+          assert len(endpoints) >= 180, len(endpoints)
+          assert len(list_tags()) >= 20, len(list_tags())
+          print(f'OK: {len(endpoints)} endpoints, {len(list_tags())} tags')
+          "
