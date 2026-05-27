@@ -9,6 +9,7 @@ found=0
 
 while IFS= read -r file; do
   [[ "$file" == ".env.example" ]] && continue
+  [[ "$file" == "scripts/check-no-secrets.sh" ]] && continue
   if grep -qE "$patterns" "$file" 2>/dev/null; then
     echo "ERROR: possible secret in tracked file: $file" >&2
     found=1
