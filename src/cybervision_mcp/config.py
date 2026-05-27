@@ -23,6 +23,10 @@ class Settings:
     verify_ssl: bool
     request_timeout: float
     max_response_chars: int
+    read_only: bool
+
+
+READ_ONLY_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
 
 
 def load_settings() -> Settings:
@@ -49,4 +53,5 @@ def load_settings() -> Settings:
         verify_ssl=_env_bool("CYBERVISION_VERIFY_SSL", False),
         request_timeout=float(timeout_raw),
         max_response_chars=int(max_chars_raw),
+        read_only=_env_bool("CYBERVISION_READ_ONLY", False),
     )

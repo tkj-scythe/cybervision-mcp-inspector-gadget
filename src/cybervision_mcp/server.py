@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import argparse
 import json
+import os
 from functools import lru_cache
 
 from mcp.server.fastmcp import FastMCP
@@ -132,12 +134,30 @@ def get_api_spec_info() -> str:
             "basePath": spec.get("basePath"),
             "endpoint_count": len(endpoints),
             "tags": list_tags(),
+            "read_only_mode": _settings().read_only,
         },
         indent=2,
     )
 
 
-def main() -> None:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Cisco Cyber Vision MCP server (stdio transport)",
+    )
+    parser.add_argument(
+        "-ro",
+        "--read-only",
+        action="store_true",
+        help="Allow GET, HEAD, and OPTIONS only (block POST/PUT/PATCH/DELETE)",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = _parse_args(argv)
+    if args.read_only:
+        os.environ["CYBERVISION_READ_ONLY"] = "true"
+    _settings.cache_clear()
     mcp.run(transport="stdio")
 
 

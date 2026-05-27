@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 
 import httpx
 
-from cybervision_mcp.config import Settings
+from cybervision_mcp.config import READ_ONLY_METHODS, Settings
 
 
 def _substitute_path(path: str, path_params: dict[str, Any] | None) -> str:
@@ -47,6 +47,13 @@ async def call_api(
     method_upper = method.strip().upper()
     if method_upper not in {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}:
         raise ValueError(f"unsupported HTTP method: {method}")
+
+    if settings.read_only and method_upper not in READ_ONLY_METHODS:
+        raise ValueError(
+            f"read-only mode: {method_upper} {path} is blocked "
+            "(only GET, HEAD, and OPTIONS are allowed). "
+            "Restart without -ro or set CYBERVISION_READ_ONLY=false to allow writes."
+        )
 
     api_path = path if path.startswith("/") else f"/{path}"
     api_path = _substitute_path(api_path, path_params)

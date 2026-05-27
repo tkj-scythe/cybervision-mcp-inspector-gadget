@@ -31,6 +31,33 @@ Credentials can live in the project `.env` file (recommended) or in the Cursor `
 | `CYBERVISION_VERIFY_SSL` | `true` / `false` (default `false` for self-signed certs) |
 | `CYBERVISION_REQUEST_TIMEOUT` | Seconds (default `60`) |
 | `CYBERVISION_MAX_RESPONSE_CHARS` | Truncate large JSON bodies (default `100000`) |
+| `CYBERVISION_READ_ONLY` | `true` / `false` (default `false`) — block mutating API calls |
+
+### Read-only mode
+
+By default the server allows all HTTP methods (read-write). To block writes:
+
+**CLI flag** (recommended):
+
+```json
+"args": ["-m", "cybervision_mcp.server", "-ro"]
+```
+
+Or:
+
+```bash
+cybervision-mcp --read-only
+```
+
+**Environment variable:**
+
+```env
+CYBERVISION_READ_ONLY=true
+```
+
+In read-only mode, `call_cybervision_api` only allows `GET`, `HEAD`, and `OPTIONS`. `POST`, `PUT`, `PATCH`, and `DELETE` are rejected before any request is sent. Discovery tools are unaffected.
+
+Check `get_api_spec_info` for `"read_only_mode": true` to confirm the running server mode.
 
 ## Cursor configuration
 
