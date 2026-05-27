@@ -120,6 +120,16 @@ gh repo create cybervision-mcp-inspector-gadget --public --source=. --remote=ori
 
 Use `--private` instead of `--public` if you prefer a private repository.
 
+## CI and branch protection
+
+GitHub Actions workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request to `main`:
+
+- Installs the package
+- Runs [`scripts/check-no-secrets.sh`](scripts/check-no-secrets.sh)
+- Smoke-tests the bundled OpenAPI index
+
+To satisfy [OpenSSF Scorecard branch protection](https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection), enable a rule on `main` and require the **CI / test** check to pass before merging.
+
 ## Manual test
 
 ```bash
