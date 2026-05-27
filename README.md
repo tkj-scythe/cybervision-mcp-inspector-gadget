@@ -1,6 +1,6 @@
 # Cisco Cyber Vision MCP Server
 
-Python [MCP](https://modelcontextprotocol.io/) server for the **Cisco Cyber Vision Classic API v3** (bundled spec: 5.4.2). Exposes a generic API caller plus OpenAPI discovery tools, similar to a Meraki-style proxy.
+Python [MCP](https://modelcontextprotocol.io/) server for the **Cisco Cyber Vision Classic API v3** (bundled spec: 5.5.0). Exposes a generic API caller plus OpenAPI discovery tools, similar to a Meraki-style proxy.
 
 ## Requirements
 
@@ -94,7 +94,7 @@ get_endpoint_info(operation_id="getComponentList")
 
 ## OpenAPI spec
 
-`cisco-cyber-vision-api-v3.json` is loaded from the project root. When you upgrade to 5.5, replace that file and restart the MCP server.
+`cisco-cyber-vision-api-v3.json` is loaded from the project root. After replacing the spec file, **restart the MCP server** so the cached endpoint index is refreshed.
 
 ## Security notes
 

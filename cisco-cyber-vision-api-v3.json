@@ -21,7 +21,7 @@
       "name": "Cisco API License Terms and Conditions",
       "url": "https://developer.cisco.com/site/license/cisco-api-license/"
     },
-    "version": "3.0.0-5.4.2"
+    "version": "3.0.0-5.5.0"
   },
   "basePath": "/api/3.0/",
   "paths": {
@@ -231,11 +231,11 @@
     },
     "/activeDiscovery/profile/{profile_id}/lastScan": {
       "get": {
-        "description": "Get profile scan result (or ongoing).",
+        "description": "Get the last scan result of a profile. The scan can be either completed or ongoing.",
         "tags": [
           "ActiveDiscovery"
         ],
-        "summary": "Get Profile Scan Result (or Ongoing)",
+        "summary": "Get Profile Last Scan Result",
         "operationId": "getProfileScans",
         "parameters": [
           {
@@ -277,7 +277,7 @@
         "tags": [
           "ActiveDiscovery"
         ],
-        "summary": "Run Once an Active Discovery Profile",
+        "summary": "Run Active Discovery Profile Once",
         "operationId": "runOnceProfile",
         "parameters": [
           {
@@ -669,11 +669,11 @@
     },
     "/admin/sensorExplorer": {
       "get": {
-        "description": "Get sensor/folder lists based on filters/pagination.",
+        "description": "Returns paginated sensors and folders matching filters and sort order.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Get Sensor/folder Lists Based on Filters/pagination",
+        "summary": "List Sensors and Folders",
         "operationId": "getSensorsAndFoldersList",
         "parameters": [
           {
@@ -722,11 +722,11 @@
     },
     "/admin/sensorExplorer/folders": {
       "get": {
-        "description": "Return id and label lists of folders.",
+        "description": "Returns lightweight folder entries (containing only id and label).",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Return Id and Label Lists of Folders",
+        "summary": "List Folder IDs and Labels",
         "operationId": "getLightFolderList",
         "responses": {
           "200": {
@@ -744,11 +744,11 @@
         }
       },
       "post": {
-        "description": "Create a new folder, provided there is no conflict in the name.",
+        "description": "Creates a new folder. A folder with the same name must not already exist.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Create New Folder without Name Conflict",
+        "summary": "Create Folder",
         "operationId": "createFolder",
         "parameters": [
           {
@@ -774,7 +774,7 @@
             "description": "incorrect token"
           },
           "409": {
-            "description": "the given folder label does already exist"
+            "description": "a folder with the same name already exists"
           },
           "default": {
             "description": "unexpected error"
@@ -784,11 +784,11 @@
     },
     "/admin/sensorExplorer/folders/{folderID}": {
       "get": {
-        "description": "Sensor list from folder based on filters/pagination.",
+        "description": "Returns paginated sensors from the specified folder with filters and sorting.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "List Sensors from Folder Based on Filters/pagination",
+        "summary": "List Sensors in Folder",
         "operationId": "getSensorListByFolderId",
         "parameters": [
           {
@@ -839,11 +839,11 @@
         }
       },
       "put": {
-        "description": "Update an existing folder.",
+        "description": "Updates an existing folder using the provided folder payload.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Update an Existing Folder",
+        "summary": "Update Folder Details",
         "operationId": "updateFolder",
         "parameters": [
           {
@@ -887,11 +887,11 @@
         }
       },
       "delete": {
-        "description": "Delete folder. Sensors in folder become orphans.",
+        "description": "Deletes the folder given by the folderID. The folder's sensors are moved to the root folder.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Delete Folder. Sensors in Folder Become Orphans",
+        "summary": "Delete a Folder",
         "operationId": "deleteFolder",
         "parameters": [
           {
@@ -930,19 +930,19 @@
         }
       }
     },
-    "/admin/sensorExplorer/folders/{id}/properties": {
+    "/admin/sensorExplorer/folders/{folderID}/properties": {
       "get": {
-        "description": "Return fully serialized folder for folder id.",
+        "description": "Returns the full serialized folder for the provided folder id.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Return Fully Serialized Folder for Folder Id",
+        "summary": "Get Folder Properties",
         "operationId": "getFolderProperties",
         "parameters": [
           {
             "type": "string",
             "description": "folder id",
-            "name": "id",
+            "name": "folderID",
             "in": "path",
             "required": true
           }
@@ -971,11 +971,11 @@
     },
     "/admin/sensorExplorer/selection": {
       "post": {
-        "description": "Get sensor/folder lists based on filters/pagination.",
+        "description": "Returns paginated selected sensors and folders from the request body.",
         "tags": [
           "SensorExplorer"
         ],
-        "summary": "Retrieve Sensor/folder Lists Based on Filters/pagination",
+        "summary": "List Selected Sensors and Folders",
         "operationId": "getSelectedFoldersAndSensors",
         "parameters": [
           {
@@ -1026,7 +1026,7 @@
     },
     "/admin/sensorExplorer/selection/moveTo": {
       "post": {
-        "description": "Move a sensor or a folder to another folder.",
+        "description": "Moves a sensor or the sensors of a folder to the target folder. If the target folder is not provided, the sensor(s) will be moved to the \"Root\" folder.",
         "tags": [
           "SensorExplorer"
         ],
@@ -1115,7 +1115,7 @@
     },
     "/admin/sensorTemplates/{template_id}/addSensors": {
       "post": {
-        "description": "Update sensor template",
+        "description": "Update a sensor template.",
         "tags": [
           "SensorTemplates"
         ],
@@ -2907,7 +2907,7 @@
         "tags": [
           "Deployments"
         ],
-        "summary": "Post Deployment",
+        "summary": "Create Deployment",
         "operationId": "postDeployment",
         "parameters": [
           {
@@ -2944,7 +2944,7 @@
     },
     "/deployments/jwt": {
       "post": {
-        "description": "Generate deployment JWT.",
+        "description": "Generate deployment JWTs. The response is a JSON object where each key is an input serial number and each value is the generated JWT token for that serial number.",
         "tags": [
           "Deployments"
         ],
@@ -2963,9 +2963,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Create deployment JWTs successful",
+            "description": "Create deployment JWTs successful.",
             "schema": {
-              "$ref": "#/definitions/DeploymentJWTListResponse"
+              "type": "object",
+              "properties": {
+                "serial_number": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              },
+              "example": {
+                "FOC1234ABC": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "FOC1234DEF": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+              }
             }
           },
           "400": {
@@ -3030,7 +3042,7 @@
         "tags": [
           "Deployments"
         ],
-        "summary": "Put Deployment",
+        "summary": "Update Deployment",
         "operationId": "putDeployment",
         "parameters": [
           {
@@ -3120,7 +3132,7 @@
         "tags": [
           "Devices"
         ],
-        "summary": "List of All Devices",
+        "summary": "List All Devices",
         "operationId": "getAll",
         "parameters": [
           {
@@ -3225,7 +3237,7 @@
         "tags": [
           "Devices"
         ],
-        "summary": "Get Information for Specific Devices",
+        "summary": "Get Device Details",
         "operationId": "getDeviceDetails",
         "parameters": [
           {
@@ -3261,7 +3273,7 @@
         "tags": [
           "Devices"
         ],
-        "summary": "Get Activities for Specific Devices",
+        "summary": "List Device Activities",
         "operationId": "getDeviceActivities",
         "parameters": [
           {
@@ -3756,6 +3768,14 @@
             "description": "success",
             "schema": {
               "type": "object",
+              "properties": {
+                "sensor.security.login": {
+                  "type": "string"
+                },
+                "sensor.security.password": {
+                  "type": "string"
+                }
+              },
               "example": {
                 "sensor.security.login": "admin",
                 "sensor.security.password": "secretPassword"
@@ -3788,6 +3808,19 @@
             "required": true,
             "schema": {
               "type": "object",
+              "properties": {
+                "SensorsGlobalCredentials": {
+                  "type": "object",
+                  "properties": {
+                    "sensor.security.login": {
+                      "type": "string"
+                    },
+                    "sensor.security.password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "example": {
                 "SensorsGlobalCredentials": {
                   "sensor.security.login": "admin",
@@ -3802,6 +3835,14 @@
             "description": "success. Global credentials have been updated successfully",
             "schema": {
               "type": "object",
+              "properties": {
+                "sensor.security.login": {
+                  "type": "string"
+                },
+                "sensor.security.password": {
+                  "type": "string"
+                }
+              },
               "example": {
                 "sensor.security.login": "admin",
                 "sensor.security.password": "newSecretPassword"
@@ -3837,6 +3878,19 @@
             "required": true,
             "schema": {
               "type": "object",
+              "properties": {
+                "SensorsGlobalCredentials": {
+                  "type": "object",
+                  "properties": {
+                    "sensor.security.login": {
+                      "type": "string"
+                    },
+                    "sensor.security.password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "example": {
                 "SensorsGlobalCredentials": {
                   "sensor.security.login": "admin",
@@ -3851,6 +3905,14 @@
             "description": "success. Global credentials have been set successfully",
             "schema": {
               "type": "object",
+              "properties": {
+                "sensor.security.login": {
+                  "type": "string"
+                },
+                "sensor.security.password": {
+                  "type": "string"
+                }
+              },
               "example": {
                 "sensor.security.login": "admin",
                 "sensor.security.password": "secretPassword"
@@ -4546,6 +4608,12 @@
             "description": "success",
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4579,6 +4647,12 @@
             "required": true,
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4592,6 +4666,12 @@
             "description": "success. Parameter(s) has been updated successfully",
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4628,6 +4708,12 @@
             "required": true,
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4641,6 +4727,12 @@
             "description": "success. Parameter(s) has been updated successfully",
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4688,6 +4780,12 @@
             "description": "success",
             "schema": {
               "type": "object",
+              "properties": {
+                "dynamic.key.one": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
               "example": {
                 "random.parameter.one": 8,
                 "random.parameter.three": true,
@@ -4764,7 +4862,7 @@
     },
     "/pcapReplays/uploads/": {
       "post": {
-        "description": "This endpoint uses the **TUS protocol**. Trailing slash is mandatory.",
+        "description": "Initiate a TUS upload for a PCAP file and return the upload URL in the Location header. Trailing slash is mandatory.",
         "tags": [
           "PcapReplays"
         ],
@@ -4787,7 +4885,7 @@
         }
       },
       "options": {
-        "description": "This endpoint uses the **TUS protocol**. Trailing slash is mandatory.",
+        "description": "Get TUS protocol capabilities and supported upload extensions for the PCAP upload resource. Trailing slash is mandatory.",
         "tags": [
           "PcapReplays"
         ],
@@ -4812,11 +4910,11 @@
     },
     "/pcapReplays/uploads/{tusId}": {
       "head": {
-        "description": "This endpoint uses the **TUS protocol**.",
+        "description": "Check TUS upload status for a PCAP file upload and return progress metadata in response headers.",
         "tags": [
           "PcapReplays"
         ],
-        "summary": "Push Data to a File",
+        "summary": "Get PCAP Upload Status",
         "operationId": "headPcapReplayUpload",
         "parameters": [
           {
@@ -4847,11 +4945,11 @@
         }
       },
       "patch": {
-        "description": "This endpoint uses the **TUS protocol**.",
+        "description": "Resume a TUS PCAP upload by sending the next binary chunk to the upload resource.",
         "tags": [
           "PcapReplays"
         ],
-        "summary": "Push Data to a File",
+        "summary": "Upload PCAP File Chunk",
         "operationId": "patchPcapReplayUpload",
         "parameters": [
           {
@@ -5893,7 +5991,7 @@
         "tags": [
           "Devices"
         ],
-        "summary": "Create List of Devices",
+        "summary": "List Devices for Preset Preview",
         "operationId": "getDeviceListPreview",
         "parameters": [
           {
@@ -6621,11 +6719,11 @@
     },
     "/presets/{preset_id}/starring/{type}": {
       "post": {
-        "description": "For more information, see https://tools.ietf.org/html/rfc6902",
+        "description": "Add a star of the requested type to the preset. For more information, see https://tools.ietf.org/html/rfc6902",
         "tags": [
           "Presets"
         ],
-        "summary": "Add the Status Starring of a Preset",
+        "summary": "Add Preset Star Status",
         "operationId": "postStarringPreset",
         "parameters": [
           {
@@ -6669,11 +6767,11 @@
         }
       },
       "delete": {
-        "description": "For more information, see https://tools.ietf.org/html/rfc6902",
+        "description": "Remove star of requested type from the preset. For more information, see https://tools.ietf.org/html/rfc6902",
         "tags": [
           "Presets"
         ],
-        "summary": "Remove the Status Starring of a Preset",
+        "summary": "Remove Preset Star Status",
         "operationId": "deleteStarringPreset",
         "parameters": [
           {
@@ -6719,7 +6817,7 @@
     },
     "/presets/{preset_id}/visualisations/activity-list": {
       "get": {
-        "description": "Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
+        "description": "List the activities for a preset. Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
         "tags": [
           "Activities"
         ],
@@ -7399,7 +7497,7 @@
         "tags": [
           "Graph"
         ],
-        "summary": "Return Graph Map Display for Preset",
+        "summary": "Get Preset Graph Map",
         "operationId": "getComponentGraphForPreset",
         "parameters": [
           {
@@ -7453,11 +7551,11 @@
     },
     "/presets/{preset_id}/visualisations/networknode-list": {
       "get": {
-        "description": "Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
+        "description": "List network nodes (devices and components) for a preset. Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
         "tags": [
           "Devices"
         ],
-        "summary": "List of Devices",
+        "summary": "List Devices",
         "operationId": "getDeviceList",
         "parameters": [
           {
@@ -7541,7 +7639,7 @@
     },
     "/presets/{preset_id}/visualisations/tag-list": {
       "get": {
-        "description": "Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
+        "description": "List the tags for a preset. Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
         "tags": [
           "Tags"
         ],
@@ -7603,7 +7701,7 @@
     },
     "/presets/{preset_id}/visualisations/vulnerability-list": {
       "get": {
-        "description": "Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
+        "description": "List the vulnerabilities for a preset. Warning: this endpoint is cached. This means that the returned data is not necessarily the latest. So, be careful when using this endpoint with live data endpoints. The cache is automatically updated, but can also be updated at will thanks to POST /presets/{preset_id}/refreshData.\n",
         "tags": [
           "Vulnerabilities"
         ],
@@ -7935,7 +8033,7 @@
         "tags": [
           "Reports"
         ],
-        "summary": "Download Report by Reportid and Filetype",
+        "summary": "Download Report by ID and File Type",
         "operationId": "downloadReports",
         "parameters": [
           {
@@ -8079,7 +8177,7 @@
         "tags": [
           "Reports"
         ],
-        "summary": "Generate Reports for Given Reports Metadata Id",
+        "summary": "Generate Reports by Metadata ID",
         "operationId": "RunReports",
         "parameters": [
           {
@@ -8112,7 +8210,7 @@
         "tags": [
           "Reports"
         ],
-        "summary": "Delete Reports That Matches to Reportid",
+        "summary": "Delete Report by Report ID",
         "operationId": "deleteReports",
         "parameters": [
           {
@@ -8145,11 +8243,11 @@
     },
     "/reports2/reports-type": {
       "get": {
-        "description": "List all existing reports types.",
+        "description": "List all available report templates and their metadata (id, label, layout, output formats, sections).\n",
         "tags": [
           "Reports"
         ],
-        "summary": "List all existing reports types.",
+        "summary": "List Available Report Types",
         "operationId": "listReportsTypes",
         "responses": {
           "200": {
@@ -8528,6 +8626,11 @@
             "required": true,
             "schema": {
               "type": "object",
+              "properties": {
+                "filter": {
+                  "type": "string"
+                }
+              },
               "example": {
                 "filter": "all"
               }
@@ -8559,11 +8662,11 @@
     },
     "/sensors/{id}/location": {
       "put": {
-        "description": "Update a sensor's location.",
+        "description": "Update a sensor's location using a JSON body with `latitude` (range -90 to 90) and `longitude` (range -180 to 180), both expressed in decimal degrees in the WGS84 coordinate system.",
         "tags": [
           "Sensors"
         ],
-        "summary": "Update a sensor's location.",
+        "summary": "Update a sensor's location",
         "operationId": "locationEdit",
         "parameters": [
           {
@@ -8574,7 +8677,7 @@
             "required": true
           },
           {
-            "description": "Latitude and longitude",
+            "description": "JSON body with `latitude` and `longitude` in decimal degrees (WGS84)",
             "name": "coordinates",
             "in": "body",
             "required": true,
@@ -8607,11 +8710,11 @@
         }
       },
       "delete": {
-        "description": "Delete a sensor's location.",
+        "description": "Remove the stored location from the sensor so it no longer has latitude/longitude coordinates.",
         "tags": [
           "Sensors"
         ],
-        "summary": "Delete a sensor's location.",
+        "summary": "Delete a sensor's location",
         "operationId": "locationDelete",
         "parameters": [
           {
@@ -8888,7 +8991,7 @@
         "tags": [
           "Vulnerabilities"
         ],
-        "summary": "Update Ack Vulnerability on Bulk Devices",
+        "summary": "Acknowledge Vulnerabilities on Multiple Devices",
         "operationId": "AcknowledgeVulnerabilityOnBulkDevices",
         "parameters": [
           {
@@ -9110,7 +9213,7 @@
         "tags": [
           "CustomProperties"
         ],
-        "summary": "Update Property to Component, Group or Device",
+        "summary": "Update Property for Component, Group, Device",
         "operationId": "putExtraField",
         "parameters": [
           {
@@ -9248,7 +9351,7 @@
         "tags": [
           "ExternalCommunication"
         ],
-        "summary": "Get Externalcommunications for Device or Component",
+        "summary": "Get External Communications for Device/Component",
         "operationId": "getExternalCommunications",
         "parameters": [
           {
@@ -11534,70 +11637,6 @@
           "type": "integer",
           "format": "int64",
           "x-go-name": "VulnerabilitiesCount"
-        }
-      },
-      "x-go-package": "cv-gitlab.cisco.com/sentryo-labs/ccv-go/backend/serialization/v3"
-    },
-    "DeviceComponents": {
-      "description": "JSON Device Components representation",
-      "type": "object",
-      "properties": {
-        "components": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DeviceComponents"
-          },
-          "x-go-name": "SubComponents"
-        },
-        "dpadId": {
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "DpadId"
-        },
-        "id": {
-          "type": "string",
-          "x-go-name": "Id"
-        },
-        "ip": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Ip"
-        },
-        "isDevice": {
-          "type": "boolean",
-          "x-go-name": "IsDevice"
-        },
-        "label": {
-          "type": "string",
-          "x-go-name": "Label"
-        },
-        "mac": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "x-go-name": "Mac"
-        },
-        "protocolCounts": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "x-go-name": "ProtocolCounts"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Tag"
-          },
-          "x-go-name": "Tags"
-        },
-        "vendor": {
-          "type": "string",
-          "x-go-name": "Vendor"
         }
       },
       "x-go-package": "cv-gitlab.cisco.com/sentryo-labs/ccv-go/backend/serialization/v3"
