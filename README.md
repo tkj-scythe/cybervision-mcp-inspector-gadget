@@ -157,6 +157,8 @@ GitHub Actions workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) r
 - Runs [`scripts/check-no-secrets.sh`](scripts/check-no-secrets.sh)
 - Smoke-tests the bundled OpenAPI index
 
+[`.github/workflows/codeql.yml`](.github/workflows/codeql.yml) runs CodeQL static analysis for Python on the same triggers (plus a weekly schedule).
+
 To satisfy [OpenSSF Scorecard branch protection](https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection), enable a rule on `main` and require the **CI / test** check to pass before merging.
 
 ## 24-hour change summary agent
