@@ -2,6 +2,8 @@
 
 Python [MCP](https://modelcontextprotocol.io/) server for the **Cisco Cyber Vision Classic API v3** (bundled spec: 5.5.0). Exposes a generic API caller plus OpenAPI discovery tools, similar to a Meraki-style proxy.
 
+Licensed under the [MIT License](LICENSE). Security reports: see [SECURITY.md](SECURITY.md).
+
 ## Requirements
 
 - Python 3.11+
@@ -156,6 +158,26 @@ GitHub Actions workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) r
 - Smoke-tests the bundled OpenAPI index
 
 To satisfy [OpenSSF Scorecard branch protection](https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection), enable a rule on `main` and require the **CI / test** check to pass before merging.
+
+## 24-hour change summary agent
+
+A local read-only agent checks your configured Center for changes in a recent time window and prints a markdown report.
+
+```bash
+source .venv/bin/activate
+cybervision-24h-summary
+```
+
+Options:
+
+```bash
+cybervision-24h-summary --hours 24 --top 10      # default
+cybervision-24h-summary --json                   # structured output
+```
+
+The report covers dashboard counts (activities, devices, components, events, vulnerabilities), top devices by risk, recent activities/components, and security events in the window.
+
+In Cursor, ask the agent to run the **cybervision-24h-summary** skill, or schedule it with `/loop 24h ...`.
 
 ## Manual test
 
