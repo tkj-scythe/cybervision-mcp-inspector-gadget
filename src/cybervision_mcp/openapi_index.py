@@ -9,9 +9,15 @@ from typing import Any
 
 _HTTP_METHODS = frozenset({"get", "post", "put", "patch", "delete", "head", "options"})
 
-_DEFAULT_SPEC = (
-    Path(__file__).resolve().parents[2] / "cisco-cyber-vision-api-v3.json"
-)
+
+def _default_spec_path() -> Path:
+    bundled = Path(__file__).resolve().parent / "cisco-cyber-vision-api-v3.json"
+    if bundled.is_file():
+        return bundled
+    return Path(__file__).resolve().parents[2] / "cisco-cyber-vision-api-v3.json"
+
+
+_DEFAULT_SPEC = _default_spec_path()
 
 
 @dataclass(frozen=True)
