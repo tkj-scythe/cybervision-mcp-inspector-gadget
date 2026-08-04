@@ -123,7 +123,38 @@ get_endpoint_info(operation_id="getComponentList")
 
 ## OpenAPI spec
 
-`cisco-cyber-vision-api-v3.json` is loaded from the project root. After replacing the spec file, **restart the MCP server** so the cached endpoint index is refreshed.
+The bundled `cisco-cyber-vision-api-v3.json` ships inside the Python package (and remains at the repo root for development). After replacing the spec file, **restart the MCP server** so the cached endpoint index is refreshed.
+
+## Releases and PyPI
+
+Tagged releases (`v*`) trigger [`.github/workflows/release.yml`](.github/workflows/release.yml), which:
+
+- Builds Python sdist/wheel packages
+- Signs artifacts with [Sigstore cosign](https://docs.sigstore.dev/) (`*.sigstore.json`) for GitHub Release assets
+- Publishes to [PyPI](https://pypi.org/project/cybervision-mcp/) when configured
+
+### First-time PyPI setup
+
+1. Register the project name **`cybervision-mcp`** on [pypi.org](https://pypi.org/) (or use an available name and update `pyproject.toml`).
+2. In PyPI → **Publishing** → **Add a new trusted publisher**:
+   - Owner: `tkj-scythe`
+   - Repository: `cybervision-mcp-inspector-gadget`
+   - Workflow: `release.yml`
+   - Environment: `pypi` (optional but recommended)
+3. In GitHub → **Settings → Environments**, create a **`pypi`** environment (no secrets required for trusted publishing).
+
+### Cut a release
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Install from PyPI after publish:
+
+```bash
+pip install cybervision-mcp
+```
 
 ## Security notes
 
